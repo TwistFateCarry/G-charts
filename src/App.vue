@@ -21,4 +21,20 @@ export default {
   color: #2c3e50;
   margin-top: 30px;
 }
+#tip-hill-div {
+  background: rgba(0, 0, 0, 0.7);
+  color: #fff;
+  padding: 5px;
+  border-radius: 5px;
+}
+
+#tip-hill-div > h1 {
+  font-size: 14px;
+  text-align: center;
+}
+
+#tip-hill-div > h2 {
+  font-size: 12px;
+  text-align: center;
+}
 </style>
