@@ -4,12 +4,12 @@
  * @author: twist
  *
  */
+
 import * as d3 from "d3";
 import { $ } from "./extend";
 import createTip from "./createTip";
 
-
-class Histogram {
+class Bar {
   constructor(option) {
     let o = {
       el : document.body,
@@ -74,7 +74,7 @@ class Histogram {
     this.processData();
     this.addXAxis();
     this.addYAxis();
-    this.addHistogram();
+    this.addBar();
   }
 
   processData() {
@@ -87,72 +87,63 @@ class Histogram {
   }
 
   addXAxis() {
-    this.xScale = d3.scaleBand()
-      .rangeRound([ 0, this.width - this.margin.left - this.margin.right ])
+    this.xScale = d3.scaleLinear()
+      .rangeRound([ this.width - this.margin.left - this.margin.right, 0 ])
+      .domain([ d3.max(this.data.map((d) => {
+        return d.value + this.MAXTop;
+      })), 0 ]);
+    if (!this.hasXAxis.show) return;
+    this.xAxis = this.group.append("g")
+      .attr("class", "xAxis")
+      .attr("transform", "translate(0," + ( this.height - this.margin.top - this.margin.bottom ) + ")")
+      .call(d3.axisBottom(this.xScale).ticks(this.hasXAxis.ticks));
+  }
+
+  addYAxis() {
+    this.yScale = d3.scaleBand()
+      .rangeRound([ 0, this.height - this.margin.left ])
       .paddingOuter(0.3)
       .paddingInner(0.3)
       .domain(this.data.map((d) => d.name));
 
-    if (!this.hasXAxis.show) return;
-
-    this.xAxis = this.group
-      .append("g")
-      .attr("class", "xAxis")
-      .attr("transform", `translate(0,${this.height -
-      this.margin.top - this.margin.bottom})`)
-      .call(d3.axisBottom(this.xScale));
-  }
-
-  addYAxis() {
-    this.yScale = d3.scaleLinear()
-      .rangeRound([ this.height - 40, 0 ])
-      .domain([ 0, d3.max(this.data.map((d) => d.value + 30)) ]);
     if (!this.hasYAxis.show) return;
-
-    this.yAxis = this.group
-      .append("g")
+    this.yAxis = this.group.append("g")
       .attr("class", "yAxis")
-      .call(d3.axisLeft(this.yScale).ticks(this.hasYAxis.ticks));
+      .call(d3.axisLeft(this.yScale));
   }
 
   animate() {
-    this.group.selectAll(".histogram")
+    this.group.selectAll(".bar")
       .transition()
       .duration(1000)
       .delay((d, i) => i * 500 / 3)
-      .attr("height", d => {
-        return this.height - this.yScale(d.value) - this.margin.top - this.margin.bottom;
-      })
-      .attr("y", d => this.yScale(d.value));
+      .attr("width", (d) => this.xScale(d.value))
+      .attr("fill", (d, i) => this.colorList[ i ]);
   }
 
-  addHistogram() {
+  addBar() {
     let _me = this;
-    this.group
-      .selectAll(".histogram")
+    this.group.selectAll(".bar")
       .data(this.data)
       .enter()
       .append("rect")
-      .attr("class", "histogram")
-      .attr("x", d => this.xScale(d.name))
-      .attr("y", this.height - this.margin.top - this.margin.bottom)
-      .attr("width", this.xScale.bandwidth())
-      .attr("height", 1)
+      .attr("class", "bar")
+      .attr("x", 1)
+      .attr("y", (d) => this.yScale(d.name))
+      .attr("width", 1)
+      .attr("height", this.yScale.bandwidth())
       .attr("fill", (d, i) => this.colorList[ i ]);
-
-
     if (!this.hasAnimatetion) {
-      this.group.selectAll(".histogram")
-        .attr("height", d => {
-          return this.height - this.yScale(d.value) - this.margin.top - this.margin.bottom;
-        });
+      this.group.selectAll(".bar")
+        .attr("width", (d) => this.xScale(d.value))
+        .attr("fill", (d, i) => this.colorList[ i ]);
     } else {
       this.animate();
     }
 
     if (!this.hasHoverEvent) return;
 
-    this.group.selectAll(".histogram")
+    this.group.selectAll(".bar")
       .on("mouseenter", function (d) {
         let self = this;
         _me.enter(d, self);
@@ -197,7 +188,6 @@ class Histogram {
     ary.push("</div>");
     return ary.join("");
   }
-
 }
 
-export { Histogram };
+export { Bar };

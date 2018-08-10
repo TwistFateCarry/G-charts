@@ -14,7 +14,7 @@
 </template>
 <script>
   import * as d3 from "d3";
-
+  import {StackHistogram} from '../../common/stackHistogram'
   export default {
     name : "item",
     data() {
@@ -76,7 +76,15 @@
     mounted() {
       // let text = this.render();
       // this.text = text;
-      this.renderer();
+      // this.renderer();
+      new StackHistogram({
+        el : this.$refs[ "svg" ],
+        hasAnimatetion : true,
+        ascending : false,
+        descending : true,
+        hasHoverEvent : true,
+        data : this.dataList
+      })
     },
     watch : {
       text : {

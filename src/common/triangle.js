@@ -80,7 +80,6 @@ class Triangle {
   processData() {
     if (this.ascending) {
       this.data.sort((a, b) => a.value - b.value);
-      return;
     }
     if (this.descending) {
       this.data.sort((a, b) => b.value - a.value);

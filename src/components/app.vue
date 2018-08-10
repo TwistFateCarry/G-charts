@@ -14,27 +14,28 @@
 </template>
 
 <script>
-export default {
-  name: "app",
-  data() {
-    return {
-      msg: "Welcome to Gchart Stations."
-    };
-  },
-  methods: {
-    goDetail() {
-      this.$router.push("./example");
+  export default {
+    name : "app",
+    data() {
+      return {
+        msg : "Welcome to Gchart Stations."
+      };
+    },
+    methods : {
+      goDetail() {
+        this.$router.push("./example");
+      }
     }
-  }
-};
+  };
 </script>
 
 <style scoped>
-h1,
-h2 {
-  font-weight: normal;
-}
-h2 {
-  color: #42b983;
-}
+  h1,
+  h2 {
+    font-weight: normal;
+  }
+
+  h2 {
+    color: #42b983;
+  }
 </style>

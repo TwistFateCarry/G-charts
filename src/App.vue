@@ -26,6 +26,8 @@ export default {
   color: #fff;
   padding: 5px;
   border-radius: 5px;
+  text-align: center;
+  width:100px;
 }
 
 #tip-hill-div > h1 {

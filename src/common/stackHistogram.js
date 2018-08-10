@@ -9,7 +9,7 @@ import { $ } from "./extend";
 import createTip from "./createTip";
 
 
-class Histogram {
+class StackHistogram {
   constructor(option) {
     let o = {
       el : document.body,
@@ -17,24 +17,39 @@ class Histogram {
       height : 500,
       data : [
         {
-          name : "苹果",
-          value : 40
+          origin : "广西",
+          "2years" : 300,
+          "3years" : 700,
+          "4years" : 1300,
+          "5years" : 700,
         },
         {
-          name : "香蕉",
-          value : 30
+          origin : "广东",
+          "2years" : 300,
+          "3years" : 700,
+          "4years" : 1300,
+          "5years" : 900,
         },
         {
-          name : "橘子",
-          value : 20
+          origin : "浙江",
+          "2years" : 300,
+          "3years" : 700,
+          "4years" : 300,
+          "5years" : 700,
         },
         {
-          name : "葡萄",
-          value : 40
+          origin : "附件",
+          "2years" : 300,
+          "3years" : 700,
+          "4years" : 1300,
+          "5years" : 500,
         },
         {
-          name : "芒果",
-          value : 20
+          origin : "云南",
+          "2years" : 300,
+          "3years" : 700,
+          "4years" : 200,
+          "5years" : 700,
         }
       ],
       colorList : d3.schemeCategory10,
@@ -53,7 +68,7 @@ class Histogram {
         show : true,
         ticks : 6
       },
-      MAXTop : 30,
+      MAXTOP : 30,
       hasAnimatetion : true,
       hasHoverEvent : true
     };
@@ -78,81 +93,95 @@ class Histogram {
   }
 
   processData() {
+    this.keys = Object.keys(this.data[ 0 ]).slice(1);
+    this.data.forEach(item => {
+      item.total = 0;
+      this.keys.forEach(current => {
+        item.total += item[ current ];
+      });
+    });
     if (this.ascending) {
-      this.data.sort((a, b) => a.value - b.value);
+      this.data.sort((a, b) => a.total - b.total);
     }
     if (this.descending) {
-      this.data.sort((a, b) => b.value - a.value);
+      this.data.sort((a, b) => b.total - a.total);
     }
   }
 
   addXAxis() {
     this.xScale = d3.scaleBand()
+      .padding(0.1)
       .rangeRound([ 0, this.width - this.margin.left - this.margin.right ])
-      .paddingOuter(0.3)
-      .paddingInner(0.3)
-      .domain(this.data.map((d) => d.name));
+      .domain(this.data.map(d => d.origin));
 
     if (!this.hasXAxis.show) return;
 
-    this.xAxis = this.group
+    this.group
       .append("g")
-      .attr("class", "xAxis")
-      .attr("transform", `translate(0,${this.height -
-      this.margin.top - this.margin.bottom})`)
+      .attr("class", "axis")
+      .attr(
+        "transform",
+        "translate(0," + ( this.height - this.margin.top - this.margin.bottom ) + ")"
+      )
       .call(d3.axisBottom(this.xScale));
   }
 
   addYAxis() {
     this.yScale = d3.scaleLinear()
-      .rangeRound([ this.height - 40, 0 ])
-      .domain([ 0, d3.max(this.data.map((d) => d.value + 30)) ]);
+      .domain([ 0, d3.max(this.data.map(item => item.total * 1.2)) ])
+      .rangeRound([ this.height - this.margin.top - this.margin.bottom, 0 ]);
+
     if (!this.hasYAxis.show) return;
 
-    this.yAxis = this.group
+    this.group
       .append("g")
-      .attr("class", "yAxis")
-      .call(d3.axisLeft(this.yScale).ticks(this.hasYAxis.ticks));
+      .attr("class", "axis")
+      .call(d3.axisLeft(this.yScale).ticks(8));
   }
 
   animate() {
-    this.group.selectAll(".histogram")
+    this.group.selectAll(".stackHistogram")
       .transition()
       .duration(1000)
-      .delay((d, i) => i * 500 / 3)
       .attr("height", d => {
-        return this.height - this.yScale(d.value) - this.margin.top - this.margin.bottom;
+        return this.yScale(d[ 0 ]) - this.yScale(d[ 1 ]);
       })
-      .attr("y", d => this.yScale(d.value));
+      .attr("y", d => this.yScale(d[ 1 ]));
   }
 
   addHistogram() {
     let _me = this;
+
     this.group
-      .selectAll(".histogram")
-      .data(this.data)
+      .append("g")
+      .selectAll(".g")
+      .data(d3.stack().keys(this.keys)(this.data))
+      .enter()
+      .append("g")
+      .attr("fill", (d, i) => this.colorList[ i ])
+      .selectAll("rect")
+      .data(d => d)
       .enter()
       .append("rect")
-      .attr("class", "histogram")
-      .attr("x", d => this.xScale(d.name))
-      .attr("y", this.height - this.margin.top - this.margin.bottom)
+      .attr("x", d => this.xScale(d.data.origin))
+      .attr("y", this.height - this.margin.top * 2)
       .attr("width", this.xScale.bandwidth())
       .attr("height", 1)
-      .attr("fill", (d, i) => this.colorList[ i ]);
-
+      .attr("class", "stackHistogram");
 
     if (!this.hasAnimatetion) {
-      this.group.selectAll(".histogram")
+      this.group.selectAll(".stackHistogram")
         .attr("height", d => {
-          return this.height - this.yScale(d.value) - this.margin.top - this.margin.bottom;
-        });
+          return this.yScale(d[ 0 ]) - this.yScale(d[ 1 ]);
+        })
+        .attr("y", d => this.yScale(d[ 1 ]));
     } else {
       this.animate();
     }
 
     if (!this.hasHoverEvent) return;
 
-    this.group.selectAll(".histogram")
+    this.group.selectAll(".stackHistogram")
       .on("mouseenter", function (d) {
         let self = this;
         _me.enter(d, self);
@@ -164,7 +193,7 @@ class Histogram {
   }
 
   enter(d, self) {
-    d3.select(self).attr("opacity", 0.8);
+    d3.select(self).attr("opacity", 0.7);
     // 添加 div
     createTip.target = this;
     createTip.longer = new Date().getTime();
@@ -192,12 +221,11 @@ class Histogram {
   createTooltipTableData(info) {
     let ary = [];
     ary.push("<div id='tip-hill-div'>");
-    ary.push("<h1>名称: " + info.name + "</h1>");
-    ary.push("<h2>值: " + info.value);
+    ary.push("<h1>名称: " + info.data.origin + "</h1>");
+    ary.push("<h2>值: " + info[ 0 ] + "-" + info[ 1 ]);
     ary.push("</div>");
     return ary.join("");
   }
-
 }
 
-export { Histogram };
+export { StackHistogram };
