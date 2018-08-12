@@ -12,7 +12,8 @@
   import bar from "../assets/bar.png";
   import group from "../assets/group.png";
   import stack from "../assets/stack.png";
-  import volume from '../assets/volume.png'
+  import volume from '../assets/volume.png';
+  import line from '../assets/line.png'
   export default {
     name : "design",
     data() {
@@ -51,7 +52,7 @@
           {
             name : "line",
             router : "./line",
-            imgUrl : volume
+            imgUrl : line
           },
           {
             name : "area",

@@ -89,7 +89,7 @@ class StackHistogram {
     this.processData();
     this.addXAxis();
     this.addYAxis();
-    this.addHistogram();
+    this.addStackHistogram();
   }
 
   processData() {
@@ -149,7 +149,7 @@ class StackHistogram {
       .attr("y", d => this.yScale(d[ 1 ]));
   }
 
-  addHistogram() {
+  addStackHistogram() {
     let _me = this;
 
     this.group

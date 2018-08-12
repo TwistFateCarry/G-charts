@@ -74,7 +74,7 @@ class Triangle {
     this.processData();
     this.addXAxis();
     this.addYAxis();
-    this.addHistogram();
+    this.addTriangle();
   }
 
   processData() {
@@ -149,7 +149,7 @@ class Triangle {
       });
   }
 
-  addHistogram() {
+  addTriangle() {
     let _me = this;
     this.group
       .selectAll(".triangle")

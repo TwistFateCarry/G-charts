@@ -130,7 +130,7 @@ class GroupHistogram {
     this.addXAxis();
     this.addYAxis();
     this.innerScale();
-    this.addHistogram();
+    this.addGroupHistogram();
   }
 
   addXAxis() {
@@ -170,7 +170,7 @@ class GroupHistogram {
       .padding(0.05);
   }
 
-  addHistogram() {
+  addGroupHistogram() {
     let _me = this;
     this.group
       .selectAll(".g")

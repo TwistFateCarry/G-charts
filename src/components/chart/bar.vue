@@ -206,7 +206,7 @@
   </div>
 </template>
 <script>
-  import { Bar } from "../../common/Bar";
+  import { Bar } from "../../common/bar";
 
   export default {
     name : "item",

@@ -8,6 +8,7 @@ import bar from "../components/chart/bar";
 import groupHistogram from "../components/chart/groupHistogram";
 import stackHistogram from "../components/chart/stackHistogram";
 import volume from "../components/chart/volume";
+import line from "../components/chart/line";
 
 Vue.use(Router);
 export default new Router({
@@ -43,6 +44,10 @@ export default new Router({
     {
       path : "/volume",
       component : volume
+    },
+    {
+      path : "/line",
+      component : line
     }
   ]
 });

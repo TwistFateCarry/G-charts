@@ -79,7 +79,7 @@ class Volume {
     this.processData();
     this.addXAxis();
     this.addYAxis();
-    this.addMain();
+    this.addVolume();
   }
 
   processData() {
@@ -198,7 +198,7 @@ class Volume {
       .attr("d", d => "M" + d.ow + ",0 L" + d.p2.x + "," + d.p2.y + " L" + d.p3.x + "," + ( d.p3.y + this.height - this.margin.top - this.yScale(d.value) ) + " L" + d.ow + "," + ( this.height - this.margin.top - this.yScale(d.value) ) + " L" + d.ow + ",0");
   }
 
-  addMain() {
+  addVolume() {
     const _me = this;
     this.outGroup = this.svg.selectAll(".outGroup")
       .data(this.data)
