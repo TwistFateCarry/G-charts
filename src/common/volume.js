@@ -53,7 +53,7 @@ class Volume {
         show : true,
         ticks : 6
       },
-      MAXTop : 30,
+      MAXTOP : 30,
       hasAnimatetion : true,
       hasHoverEvent : true,
       xOffset : 20,
@@ -91,7 +91,7 @@ class Volume {
     }
   }
 
-  processPoint(xLinearScale, data) {
+  static processPoint(xLinearScale, data) {
     const angle = Math.PI / 2.3;
     for ( let i = 0 ; i < data.length ; i++ ) {
       let d = data[ i ];
@@ -166,7 +166,7 @@ class Volume {
 
   addYAxis() {
     this.yScale = d3.scaleLinear()
-      .domain([ 0, d3.max(this.data.map(item => item.value + 30)) ])
+      .domain([ 0, d3.max(this.data.map(item => item.value + this.MAXTOP)) ])
       .range([ this.height - this.margin.top - this.margin.bottom - this.xOffset, 0 ]);
     if (!this.hasYAxis.show) return;
     //定义Y轴比例尺以及刻度
@@ -267,13 +267,13 @@ class Volume {
     createTip.hoverTimerFn(this.createTooltipTableData(d), self);
   }
 
-  leave(self) {
+  static leave(self) {
     d3.select(self).attr("opacity", 1);
     createTip.target = null;
     createTip.ClearDiv();
   }
 
-  createTooltipTableData(info) {
+   static createTooltipTableData(info) {
     let ary = [];
     ary.push("<div id='tip-hill-div'>");
     ary.push("<h1>名称: " + info.name + "</h1>");
