@@ -12,8 +12,10 @@
   import bar from "../assets/bar.png";
   import group from "../assets/group.png";
   import stack from "../assets/stack.png";
-  import volume from '../assets/volume.png';
-  import line from '../assets/line.png'
+  import volume from "../assets/volume.png";
+  import line from "../assets/line.png";
+  import area from '../assets/area.png'
+
   export default {
     name : "design",
     data() {
@@ -51,29 +53,34 @@
           },
           {
             name : "line",
-            router : "./line",
+            router : "/line",
             imgUrl : line
           },
           {
             name : "area",
-            router : "./area",
-            imgUrl : volume
+            router : "/area",
+            imgUrl : area
           },
-          {
-            name : "bubbles",
-            router : "./bubbles",
-            imgUrl : volume
-          },
-          {
-            name : "scatter",
-            router : "./scatter",
-            imgUrl : volume
-          },
-          {
-            name : "map",
-            router : "./map",
-            imgUrl : volume
-          }
+          // {
+          //   name : "pie",
+          //   router : "/pie",
+          //   imgUrl : line
+          // },
+          // {
+          //   name : "bubbles",
+          //   router : "/bubbles",
+          //   imgUrl : volume
+          // },
+          // {
+          //   name : "scatter",
+          //   router : "/scatter",
+          //   imgUrl : volume
+          // },
+          // {
+          //   name : "map",
+          //   router : "/map",
+          //   imgUrl : volume
+          // }
         ]
       };
     },

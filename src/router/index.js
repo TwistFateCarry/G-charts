@@ -1,14 +1,15 @@
 import Vue from "vue";
 import Router from "vue-router";
-import Home from "@/components/app";
-import example from "../components/example.vue";
-import histogram from "../components/chart/histogram";
-import triangle from "../components/chart/triangle";
-import bar from "../components/chart/bar";
-import groupHistogram from "../components/chart/groupHistogram";
-import stackHistogram from "../components/chart/stackHistogram";
-import volume from "../components/chart/volume";
-import line from "../components/chart/line";
+import Home from "@/components/index";
+import example from "@/components/example.vue";
+import histogram from "@/components/chart/histogram";
+import triangle from "@/components/chart/triangle";
+import bar from "@/components/chart/bar";
+import groupHistogram from "@/components/chart/groupHistogram";
+import stackHistogram from "@/components/chart/stackHistogram";
+import volume from "@/components/chart/volume";
+import line from "@/components/chart/line";
+import area from "@/components/chart/area";
 
 Vue.use(Router);
 export default new Router({
@@ -48,6 +49,10 @@ export default new Router({
     {
       path : "/line",
       component : line
+    },
+    {
+      path : "/area",
+      component : area
     }
   ]
 });

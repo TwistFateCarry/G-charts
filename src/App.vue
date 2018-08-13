@@ -4,7 +4,6 @@
       <img src="./assets/github.png" alt="">
     </a>
     <router-view/>
-    <h3>定制化服务或技术交流请Email至hangxuguang@360.cn</h3>
   </div>
 </template>
 
