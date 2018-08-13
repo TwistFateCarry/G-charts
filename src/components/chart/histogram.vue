@@ -215,7 +215,7 @@
   import { Histogram } from "../../common/histogram";
 
   export default {
-    name : "item",
+    name : "histogram",
     data() {
       return {
         width : 500,

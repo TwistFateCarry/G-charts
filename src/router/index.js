@@ -10,6 +10,7 @@ import stackHistogram from "@/components/chart/stackHistogram";
 import volume from "@/components/chart/volume";
 import line from "@/components/chart/line";
 import area from "@/components/chart/area";
+import pie from "@/components/chart/pie";
 
 Vue.use(Router);
 export default new Router({
@@ -53,6 +54,10 @@ export default new Router({
     {
       path : "/area",
       component : area
+    },
+    {
+      path : "/pie",
+      component : pie
     }
   ]
 });

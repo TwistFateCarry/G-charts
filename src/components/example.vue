@@ -14,7 +14,8 @@
   import stack from "../assets/stack.png";
   import volume from "../assets/volume.png";
   import line from "../assets/line.png";
-  import area from '../assets/area.png'
+  import area from "../assets/area.png";
+  import pie from "../assets/pie.png";
 
   export default {
     name : "design",
@@ -61,11 +62,11 @@
             router : "/area",
             imgUrl : area
           },
-          // {
-          //   name : "pie",
-          //   router : "/pie",
-          //   imgUrl : line
-          // },
+          {
+            name : "pie",
+            router : "/pie",
+            imgUrl : pie
+          },
           // {
           //   name : "bubbles",
           //   router : "/bubbles",

@@ -281,7 +281,7 @@
   import { GroupHistogram } from "../../common/groupHistogram";
 
   export default {
-    name : "item",
+    name : "groupHistogram",
     data() {
       return {
         width : 500,

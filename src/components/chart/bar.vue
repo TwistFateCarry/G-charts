@@ -203,7 +203,7 @@
   import { Bar } from "../../common/bar";
 
   export default {
-    name : "item",
+    name : "barChart",
     data() {
       return {
         width : 500,

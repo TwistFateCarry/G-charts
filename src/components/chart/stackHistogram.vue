@@ -242,7 +242,7 @@
   import { StackHistogram } from "../../common/stackHistogram";
 
   export default {
-    name : "item",
+    name : "stackHistogram",
     data() {
       return {
         width : 500,

@@ -297,7 +297,7 @@
   import { Volume } from "../../common/volume";
 
   export default {
-    name : "item",
+    name : "volume",
     data() {
       return {
         width : 500,

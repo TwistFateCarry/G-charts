@@ -191,7 +191,7 @@
   import { Area } from "../../common/area";
 
   export default {
-    name : "lineChart",
+    name : "areaChart",
     data() {
       return {
         width : 500,
