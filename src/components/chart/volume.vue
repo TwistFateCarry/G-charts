@@ -7,12 +7,6 @@
     </div>
     <div class="item_div">
       <textarea rows="59" cols="99">
-        /**
-         *
-         * @Date: 2018/8/10
-         * @author: twist
-         *
-         */
 
         import * as d3 from "d3";
         import { $ } from "./extend";
