@@ -7,16 +7,14 @@
     </div>
     <div class="item_div">
       <textarea cols="99" rows="59">
-
         import * as d3 from "d3";
         import { $ } from "./extend";
-        import createTip from "./createTip";
 
 
         class GroupHistogram {
           constructor(option) {
             let o = {
-              el : document.body,
+              el : null,
               width : 500,
               height : 500,
               data : [
@@ -102,11 +100,10 @@
                 show : true,
                 ticks : 6
               },
-              MAXTop : 10,
-              hasAnimatetion : true,
-              hasHoverEvent : true
+              MAXTOP : 10,
+              hasAnimatetion : true
             };
-
+            if (!option.el) o.el = d3.select("body").append("svg");
             $.extend(true, o, option);
             $.extend(true, this, o);
             this.init();
@@ -134,7 +131,7 @@
             this.addXAxis();
             this.addYAxis();
             this.innerScale();
-            this.addHistogram();
+            this.addGroupHistogram();
           }
 
           addXAxis() {
@@ -156,7 +153,7 @@
 
           addYAxis() {
             this.yScale = d3.scaleLinear()
-              .domain([ 0, this.max + this.MAXTop ])
+              .domain([ 0, this.max + this.MAXTOP ])
               .rangeRound([ this.height - this.margin.top - this.margin.bottom, 0 ]);
             if (!this.hasYAxis.show) return;
 
@@ -174,8 +171,7 @@
               .padding(0.05);
           }
 
-          addHistogram() {
-            let _me = this;
+          addGroupHistogram() {
             this.group
               .selectAll(".g")
               .data(this.data)
@@ -203,24 +199,10 @@
                 .attr("height", d => {
                   return this.height - this.margin.top - this.margin.bottom - this.yScale(d.value);
                 })
-                .attr("y", d => {
-                  return this.yScale(d.value);
-                });
+                .attr("y", d => this.yScale(d.value));
             } else {
               this.animate();
             }
-
-            if (!this.hasHoverEvent) return;
-
-            this.group.selectAll(".rect")
-              .on("mouseenter", function (d) {
-                let self = this;
-                _me.enter(d, self);
-              })
-              .on("mouseleave", function () {
-                let self = this;
-                _me.leave(self);
-              });
           }
 
           animate() {
@@ -230,49 +212,14 @@
               .attr("height", d => {
                 return this.height - this.margin.top - this.margin.bottom - this.yScale(d.value);
               })
-              .attr("y", d => {
-                return this.yScale(d.value);
-              });
-          }
-
-          enter(d, self) {
-            d3.select(self).attr("opacity", 0.7);
-            // 添加 div
-            createTip.target = this;
-            createTip.longer = new Date().getTime();
-            createTip.exist = false;
-            //获取坐标
-            createTip.winEvent = {
-              x : event.clientX,
-              y : event.clientY - 20
-            };
-            createTip.boxHeight = 50;
-            createTip.boxWidth = 80;
-
-            //hide
-            createTip.ClearDiv();
-            //show
-            createTip.hoverTimerFn(this.createTooltipTableData(d), self);
-          }
-
-          leave(self) {
-            d3.select(self).attr("opacity", 1);
-            createTip.target = null;
-            createTip.ClearDiv();
-          }
-
-          createTooltipTableData(info) {
-            let ary = [];
-            ary.push("<div id='tip-hill-div'>");
-            ary.push("<h1>名称: " + info.origin + "</h1>");
-            ary.push("<h2>值: " + info.value);
-            ary.push("</div>");
-            return ary.join("");
+              .attr("y", d => this.yScale(d.value));
           }
 
         }
 
         export { GroupHistogram };
+
+
       </textarea>
     </div>
   </div>
@@ -365,7 +312,6 @@
         hasAnimatetion : true,
         ascending : false,
         descending : true,
-        hasHoverEvent : true,
         data : this.dataList
       });
     },

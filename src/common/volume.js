@@ -7,12 +7,11 @@
 
 import * as d3 from "d3";
 import { $ } from "./extend";
-import createTip from "./createTip";
 
 class Volume {
   constructor(option) {
     let o = {
-      el : document.body,
+      el : null,
       width : 500,
       height : 500,
       data : [
@@ -55,14 +54,13 @@ class Volume {
       },
       MAXTOP : 30,
       hasAnimatetion : true,
-      hasHoverEvent : true,
       xOffset : 20,
       inclineAngle : 15,
       mainColorList : [ "#f6e242", "#ebec5b", "#d2ef5f", "#b1d894", "#97d5ad", "#82d1c0", "#70cfd2", "#63c8ce", "#50bab8", "#38a99d" ],
       topColorList : [ "#e9d748", "#d1d252", "#c0d75f", "#a2d37d", "#83d09e", "#68ccb6", "#5bc8cb", "#59c0c6", "#3aadab", "#2da094" ],
       rightColorList : [ "#dfce51", "#d9db59", "#b9d54a", "#9ece7c", "#8ac69f", "#70c3b1", "#65c5c8", "#57bac0", "#42aba9", "#2c9b8f" ]
     };
-
+    if (!option.el) o.el = d3.select("body").append("svg");
     $.extend(true, o, option);
     $.extend(true, this, o);
     this.init();
@@ -198,7 +196,6 @@ class Volume {
   }
 
   addVolume() {
-    const _me = this;
     this.outGroup = this.svg.selectAll(".outGroup")
       .data(this.data)
       .enter()
@@ -232,53 +229,6 @@ class Volume {
     } else {
       this.animate();
     }
-
-    if (!this.hasHoverEvent) return;
-
-    this.svg.selectAll(".outGroup")
-      .on("mouseenter", function (d) {
-        let self = this;
-        _me.constructor.enter(d, self);
-      })
-      .on("mouseleave", function () {
-        let self = this;
-        _me.constructor.leave(self);
-      });
-  }
-
-  static enter(d, self) {
-    d3.select(self).attr("opacity", 0.8);
-    // 添加 div
-    createTip.target = this;
-    createTip.longer = new Date().getTime();
-    createTip.exist = false;
-    //获取坐标
-    createTip.winEvent = {
-      x : event.clientX,
-      y : event.clientY - 20
-    };
-    createTip.boxHeight = 50;
-    createTip.boxWidth = 80;
-
-    //hide
-    createTip.ClearDiv();
-    //show
-    createTip.hoverTimerFn(this.createTooltipTableData(d), self);
-  }
-
-  static leave(self) {
-    d3.select(self).attr("opacity", 1);
-    createTip.target = null;
-    createTip.ClearDiv();
-  }
-
-  static createTooltipTableData(info) {
-    let ary = [];
-    ary.push("<div id='tip-hill-div'>");
-    ary.push("<h1>名称: " + info.name + "</h1>");
-    ary.push("<h2>值: " + info.value);
-    ary.push("</div>");
-    return ary.join("");
   }
 }
 

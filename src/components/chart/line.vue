@@ -18,7 +18,7 @@
         class Line {
           constructor(option) {
             let o = {
-              el : document.body,
+              el : null,
               width : 500,
               height : 500,
               data : [
@@ -60,8 +60,7 @@
                 ticks : 6
               },
               MAXTop : 30,
-              hasAnimatetion : true,
-              hasHoverEvent : true
+              hasAnimatetion : true
             };
 
             $.extend(true, o, option);

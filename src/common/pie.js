@@ -11,7 +11,7 @@ import { $ } from "./extend";
 class Pie {
   constructor(option) {
     let o = {
-      el : document.body,
+      el :null,
       width : 500,
       height : 500,
       data : [
@@ -46,7 +46,7 @@ class Pie {
       textInness : 20,
       hasAnimatetion : true
     };
-
+    if (!option.el) o.el = d3.select("body").append("svg");
     $.extend(true, o, option);
     $.extend(true, this, o);
     this.init();

@@ -18,7 +18,7 @@
         class Area {
           constructor(option) {
             let o = {
-              el : document.body,
+              el : null,
               width : 500,
               height : 500,
               data : [
@@ -66,7 +66,7 @@
               },
               areaType : "Curve"
             };
-
+            if (!option.el) o.el = d3.select("body").append("svg");
             $.extend(true, o, option);
             $.extend(true, this, o);
             this.init();
@@ -232,7 +232,6 @@
         ascending : false,
         descending : true,
         data : this.dataList,
-        lineThickness : 2,
         areaType : this.areaType
       });
     },
