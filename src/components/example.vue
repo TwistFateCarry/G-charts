@@ -67,6 +67,11 @@
             router : "/pie",
             imgUrl : pie
           },
+          {
+            name : "donuts",
+            router : "/donuts",
+            imgUrl : pie
+          },
           // {
           //   name : "bubbles",
           //   router : "/bubbles",

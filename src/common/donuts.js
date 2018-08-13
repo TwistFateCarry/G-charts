@@ -8,10 +8,10 @@
 import * as d3 from "d3";
 import { $ } from "./extend";
 
-class Pie {
+class Donuts {
   constructor(option) {
     let o = {
-      el :null,
+      el : null,
       width : 500,
       height : 500,
       data : [
@@ -44,7 +44,9 @@ class Pie {
       },
       colorList : d3.schemeCategory10,
       textInness : 20,
-      hasAnimatetion : true
+      hasAnimatetion : true,
+      outerInness : 20,
+      innerInness : 70
     };
     if (!option.el) o.el = d3.select("body").append("svg");
     $.extend(true, o, option);
@@ -56,16 +58,13 @@ class Pie {
   init() {
     this.svg = d3.select(this.el);
     this.svg.html("");
-    this.R =  Math.min(this.width, this.height) - this.margin.left - this.margin.right;
+    this.R = Math.min(this.width, this.height) - this.margin.left - this.margin.right;
     this.radius = this.R / 2;
     this.pie = d3.pie().sort(null).value(d => d.value);
-    this.path = d3.arc().outerRadius(this.radius).innerRadius(0);
-
-    this.transition = d3.arc().outerRadius(1).innerRadius(0);
-    this.label = d3.arc().outerRadius(this.radius + this.textInness).innerRadius(this.radius + this.textInness);
-
+    this.path = d3.arc().outerRadius(this.radius - this.outerInness).innerRadius(this.radius - this.innerInness);
     this.group = this.svg.append("g")
       .attr("transform", `translate(${( this.width - this.R ) / 2 + this.radius},${( this.width - this.R ) / 2 + this.radius})`);
+
     this.processData();
     this.addArc();
   }
@@ -81,37 +80,58 @@ class Pie {
   }
 
   animate() {
-    this.paths.transition()
-      .duration(500)
-      .delay((d, i) => i * 200)
-      .attr("d", this.path);
-  }
-
-  addArc() {
+    let _me = this;
     this.arc = this.group.selectAll(".pie")
       .data(this.pie(this.data))
       .enter()
       .append("g")
       .attr("class", ".pie");
+
     this.paths = this.arc.append("path")
-      .attr("d", this.transition)
       .attr("class", "piePath")
-      .attr("fill", (d, i) => this.colorList[ i ]);
+      .attr("fill", (d, i) => this.colorList[ i ])
+      .transition()
+      .duration(3000)
+      .attrTween("d", function (d) {
+        this._current = this.current || d;
+        let interpolate = d3.interpolate(this._current, d);
+        this._current = interpolate(0);
+        return (t) => {
+          return _me.path(interpolate(t));
+        };
+      });
 
     this.arc.append("text")
-      .attr("transform", d => `translate(${this.label.centroid(d)})`)
-      .attr("dy", "-.5em")
-      .attr("dx", "3")
+      .attr("transform", d => `translate(${this.path.centroid(d)})`)
       .attr("font-size", 12)
       .style("text-anchor", "middle")
       .text(d => d.data.name);
+  }
+
+  addArc() {
     if (this.hasAnimatetion) {
       this.animate();
     } else {
-      this.arc.selectAll(".piePath").attr("d", this.path);
+      this.arc = this.group.selectAll(".pie")
+        .data(this.pie(this.data))
+        .enter()
+        .append("g")
+        .attr("class", ".pie");
+      this.paths = this.arc.append("path")
+        .attr("d", this.path)
+        .attr("class", "piePath")
+        .attr("fill", (d, i) => this.colorList[ i ]);
+
+      this.arc.append("text")
+        .attr("transform", d => `translate(${this.path.centroid(d)})`)
+        .attr("dy", "-.5em")
+        .attr("dx", "3")
+        .attr("font-size", 12)
+        .style("text-anchor", "middle")
+        .text(d => d.data.name);
     }
   }
 
 }
 
-export { Pie };
+export { Donuts };

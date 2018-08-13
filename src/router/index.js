@@ -11,6 +11,7 @@ import volume from "@/components/chart/volume";
 import line from "@/components/chart/line";
 import area from "@/components/chart/area";
 import pie from "@/components/chart/pie";
+import donuts from '@/components/chart/donuts'
 
 Vue.use(Router);
 export default new Router({
@@ -58,6 +59,10 @@ export default new Router({
     {
       path : "/pie",
       component : pie
+    },
+    {
+      path:'/donuts',
+      component:donuts
     }
   ]
 });
