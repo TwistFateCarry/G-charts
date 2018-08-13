@@ -91,14 +91,13 @@ class Donuts {
       .attr("class", "piePath")
       .attr("fill", (d, i) => this.colorList[ i ])
       .transition()
-      .duration(3000)
+      .duration(1000)
       .attrTween("d", function (d) {
-        this._current = this.current || d;
-        let interpolate = d3.interpolate(this._current, d);
-        this._current = interpolate(0);
-        return (t) => {
-          return _me.path(interpolate(t));
-        };
+        let interpolate = d3.interpolate({
+          startAngle : 0,
+          endAngle : 0
+        }, d);
+        return (t) => _me.path(interpolate(t));
       });
 
     this.arc.append("text")
