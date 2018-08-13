@@ -1,8 +1,10 @@
 <template>
   <div id="app">
+    <a href="https://github.com/TwistFateCarry/G-charts" target="_blank" style="position: fixed; right: 0; top: 0; z-index: 3;">
+      <img src="./assets/github.png" alt="">
+    </a>
     <router-view/>
-    <h3>定制化服务或技术交流请email至hangxuguang@360.cn</h3>
-    <h3><a href="https://github.com/TwistFateCarry/TwistFateCarry.github.io" target="blank">Github</a></h3>
+    <h3>定制化服务或技术交流请Email至hangxuguang@360.cn</h3>
   </div>
 </template>
 
@@ -20,6 +22,10 @@
     text-align: center;
     color: #2c3e50;
     margin-top: 30px;
+  }
+  h3{
+    font-size: 16px;
+    font-weight: 900;
   }
 
   #tip-hill-div {

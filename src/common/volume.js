@@ -159,9 +159,8 @@ class Volume {
       .attr("font-size", "14px")
       .attr("fill", "#646464")
       .attr("transform", `translate(0,${this.xOffset})`);
-
     //一次处理所有点位置
-    this.processPoint(this.xScale, this.data);
+    this.constructor.processPoint(this.xScale, this.data);
   }
 
   addYAxis() {
@@ -239,15 +238,15 @@ class Volume {
     this.svg.selectAll(".outGroup")
       .on("mouseenter", function (d) {
         let self = this;
-        _me.enter(d, self);
+        _me.constructor.enter(d, self);
       })
       .on("mouseleave", function () {
         let self = this;
-        _me.leave(self);
+        _me.constructor.leave(self);
       });
   }
 
-  enter(d, self) {
+  static enter(d, self) {
     d3.select(self).attr("opacity", 0.8);
     // 添加 div
     createTip.target = this;
@@ -273,7 +272,7 @@ class Volume {
     createTip.ClearDiv();
   }
 
-   static createTooltipTableData(info) {
+  static createTooltipTableData(info) {
     let ary = [];
     ary.push("<div id='tip-hill-div'>");
     ary.push("<h1>名称: " + info.name + "</h1>");
