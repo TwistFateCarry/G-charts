@@ -12,11 +12,11 @@
   import bar from "../assets/bar.png";
   import group from "../assets/group.png";
   import stack from "../assets/stack.png";
-  import volume from "../assets/volume.png";
+  import volume from "../assets/volume.gif";
   import line from "../assets/line.png";
   import area from "../assets/area.png";
   import pie from "../assets/pie.png";
-
+  import donutsPie from '../assets/donutsPie.png'
   export default {
     name : "design",
     data() {
@@ -70,7 +70,7 @@
           {
             name : "donuts",
             router : "/donuts",
-            imgUrl : pie
+            imgUrl : donutsPie
           },
           // {
           //   name : "bubbles",
