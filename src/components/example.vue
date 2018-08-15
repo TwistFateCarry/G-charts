@@ -16,7 +16,9 @@
   import line from "../assets/line.png";
   import area from "../assets/area.png";
   import pie from "../assets/pie.png";
-  import donutsPie from '../assets/donutsPie.png'
+  import donutsPie from "../assets/donutsPie.png";
+  import donuts3D from "../assets/donuts3D.png";
+
   export default {
     name : "design",
     data() {
@@ -72,6 +74,11 @@
             router : "/donuts",
             imgUrl : donutsPie
           },
+          {
+            name : "donuts3D",
+            router : "/donuts3D",
+            imgUrl : donuts3D
+          }
           // {
           //   name : "bubbles",
           //   router : "/bubbles",
