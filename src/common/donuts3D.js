@@ -1,14 +1,13 @@
 /**
  *
- * @Date: 2018/8/13
+ * @Date: 2018/8/14
  * @author: twist
  *
  */
-
 import * as d3 from "d3";
 import { $ } from "./extend";
 
-class Pie {
+class Donuts3D {
   constructor(option) {
     let o = {
       el : null,
@@ -50,24 +49,23 @@ class Pie {
     $.extend(true, o, option);
     $.extend(true, this, o);
     this.init();
-
-  }
+  };
 
   init() {
     this.svg = d3.select(this.el);
     this.svg.html("");
     this.R = Math.min(this.width - this.margin.left - this.margin.right, this.height - this.margin.top - this.margin.bottom);
     this.radius = this.R / 2;
-    this.pie = d3.pie().sort(null).value(d => d.value);
-    this.path = d3.arc().outerRadius(this.radius).innerRadius(0);
 
-    this.transition = d3.arc().outerRadius(1).innerRadius(0);
-    this.label = d3.arc().outerRadius(this.radius + this.textInness).innerRadius(this.radius + this.textInness);
+    this._data = d3.pie().sort(null).value(d => d.value)(this.data);
 
     this.group = this.svg.append("g")
       .attr("transform", `translate(${( this.width - this.R ) / 2 + this.radius},${( this.width - this.R ) / 2 + this.radius})`);
     this.processData();
-    this.addArc();
+    this.addPieTop();
+    this.addPieOuter();
+    this.addPieInner();
+    if (this.hasText) this.addText();
   }
 
   processData() {
@@ -80,38 +78,41 @@ class Pie {
     }
   }
 
-  animate() {
-    this.paths.transition()
-      .duration(500)
-      .delay((d, i) => i * 200)
-      .attr("d", this.path);
+  getPercent(d) {
+    return ( d.endAngle - d.startAngle > 0.2 ?
+      Math.round(1000 * ( d.endAngle - d.startAngle ) / ( Math.PI * 2 )) / 10 + "%" : "" );
   }
 
-  addArc() {
-    this.arc = this.group.selectAll(".pie")
-      .data(this.pie(this.data))
+  addPieTop() {
+    this.group.selectAll(".topPath")
+      .data(this._data)
       .enter()
-      .append("g")
-      .attr("class", ".pie");
-    this.paths = this.arc.append("path")
-      .attr("d", this.transition)
-      .attr("class", "piePath")
-      .attr("fill", (d, i) => this.colorList[ i ]);
+      .append('path')
+      .attr('class','topPath')
+      .attr('fill',(d,i)=>this.colorList[i])
+      .attr('stroke',(d,i)=>this.colorList[i])
+      .attr('d',d=>{
 
-    this.arc.append("text")
-      .attr("transform", d => `translate(${this.label.centroid(d)})`)
-      .attr("dy", "-.5em")
-      .attr("dx", "3")
-      .attr("font-size", 12)
-      .style("text-anchor", "middle")
-      .text(d => d.data.name);
-    if (this.hasAnimatetion) {
-      this.animate();
-    } else {
-      this.arc.selectAll(".piePath").attr("d", this.path);
-    }
+      })
+    if (this.hasAnimatetion) this.animate();
   }
+
+  addPieOuter() {
+    if (this.hasAnimatetion) this.animate();
+  }
+
+  addPieInner() {
+    if (this.hasAnimatetion) this.animate();
+  }
+
+  addText() {
+    this.getPercent();
+  }
+
+  animate() {
+  }
+
 
 }
 
-export { Pie };
+export { Donuts3D };

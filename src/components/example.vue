@@ -12,10 +12,12 @@
   import bar from "../assets/bar.png";
   import group from "../assets/group.png";
   import stack from "../assets/stack.png";
-  import volume from "../assets/volume.png";
+  import volume from "../assets/volume.gif";
   import line from "../assets/line.png";
   import area from "../assets/area.png";
   import pie from "../assets/pie.png";
+  import donutsPie from "../assets/donutsPie.png";
+  import donuts3D from "../assets/donuts3D.png";
 
   export default {
     name : "design",
@@ -70,8 +72,13 @@
           {
             name : "donuts",
             router : "/donuts",
-            imgUrl : pie
+            imgUrl : donutsPie
           },
+          {
+            name : "donuts3D",
+            router : "/donuts3D",
+            imgUrl : donuts3D
+          }
           // {
           //   name : "bubbles",
           //   router : "/bubbles",

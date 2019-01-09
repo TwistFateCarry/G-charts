@@ -1,4 +1,4 @@
-# h-charts
+# G-charts
 
 > A Vue.js project
 
